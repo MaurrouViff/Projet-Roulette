@@ -1,6 +1,6 @@
 <?php
 
-class Databse {
+class Database {
     protected string $login = "root";
     protected string $mdp = "root";
     protected string $bd = "roulette";
