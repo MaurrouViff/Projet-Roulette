@@ -1,0 +1,12 @@
+html, body {
+    height: 100%;
+    font-family: Poppings, sans-serif;
+}
+body {
+    padding: 0;
+    margin: 0;
+    background-color: black;
+}
+p {
+    color: white;
+}
