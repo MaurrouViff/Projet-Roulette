@@ -5,8 +5,70 @@ html, body {
 body {
     padding: 0;
     margin: 0;
-    background-color: black;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
 }
-p {
+.section {
+    background: url("../assets/background/paysage-image.jpg") center center no-repeat;
+    min-height: 100%;
+    padding-top: 126px;
+    align-items: center;
+    justify-content: center; /* Ajout de cette ligne pour centrer horizontalement le contenu */
+    padding-bottom: 90px;
+    background-size: cover;
+}
+.container {
+    flex-grow: 1;
+}
+.red {
+    color: red;
+}
+footer {
+    text-align: center;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: black;
     color: white;
+    opacity: 0.60;
+}
+
+td, th {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 8px;
+    box-shadow: 0 0 0 1px rgb(0, 0, 0);
+    margin: -2px;
+}
+th {
+    color: lightblue;
+}
+hr {
+    height: 2px;
+    border: 0;
+    background-image: linear-gradient(135deg, #202121 24%, #2a2c2c 50%, #353838 79%, #515456 100%);
+}
+.first-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+.first-button:hover {
+    background-color: #2980b9;
+}
+.orange {
+    color: orange;
 }
