@@ -44,6 +44,7 @@ if (isset($_POST['select-student'])) {
 <div class="container">
     <section class="section">
     <h1 class="red">Voici la liste des élèves :</h1>
+
     <table>
         <thead>
         <tr>
