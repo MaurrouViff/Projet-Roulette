@@ -3,7 +3,7 @@ include_once("modele/bd.eleve.inc.php");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+// Affiche la liste des élèves
 try {
     $listeEleve = getEleve();
 } catch (PDOException $e) {
@@ -11,7 +11,7 @@ try {
     echo "Erreur de base de données : " . $e->getMessage();
     die();
 }
-
+// Permet de choisir un élève
 $eleveChoisi = null;
 
 if (isset($_POST['select-student'])) {
