@@ -54,8 +54,30 @@ class EleveDatabase {
             die("Erreur : " . $e->getMessage());
         }
     }
+    public function selectRandomEleveByClasse($classe) {
+        try {
+            $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe AND passage = 'non' ORDER BY RAND() LIMIT 1");
+            $req->bindParam(":classe", $classe, PDO::PARAM_STR);
+            $req->execute();
 
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die("Erreur : " . $e->getMessage());
+        }
+    }
 
+    public function checkIfStudentExists($id) {
+        try {
+            $req = $this->conn->prepare("SELECT COUNT(*) AS count FROM eleve WHERE id = :id");
+            $req->bindParam(":id", $id, PDO::PARAM_INT);
+            $req->execute();
+
+            $result = $req->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] > 0;
+        } catch (PDOException $e) {
+            return false; // Gérer l'erreur de base de données ici
+        }
+    }
 
     public function selectRandomEleve() {
         try {
