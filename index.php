@@ -37,14 +37,8 @@ if (isset($_POST['filtrer-par-classe'])) {
     }
 }
 
-
-
-// ...
-
-
 // Affiche la moyenne de la classe
 $showMoyenne = $eleveDb->getMoyenneNote();
-
 
 // Permet de choisir un élève
 if (empty($classeSelectionnee)) {
