@@ -6,17 +6,29 @@ error_reporting(E_ALL);
 
 $eleveDb = new EleveDatabase();
 
+// Récupérer la liste des classes depuis la base de données
+$listeClasses = $eleveDb->getClasses();
+
+// Tableau qui contiendra les élèves à afficher
+$listeEleve = [];
+
+// Vérifier si le formulaire de filtrage par classe a été soumis
+if (isset($_POST['filtrer-par-classe'])) {
+    $classeSelectionnee = $_POST['classe-selectionnee'];
+
+    if (!empty($classeSelectionnee)) {
+        try {
+            $listeEleve = $eleveDb->getEleveByClasse($classeSelectionnee);
+        } catch (PDOException $e) {
+            // Gestion de l'erreur de base de données
+            echo "Erreur de base de données : " . $e->getMessage();
+            die();
+        }
+    }
+}
+
 // Affiche la moyenne de la classe
 $showMoyenne = $eleveDb->getMoyenneNote();
-
-// Affiche la liste des élèves
-try {
-    $listeEleve = $eleveDb->getEleve();
-} catch (PDOException $e) {
-    // Gestion de l'erreur de base de données
-    echo "Erreur de base de données : " . $e->getMessage();
-    die();
-}
 
 // Permet de choisir un élève
 $eleveChoisi = null;
@@ -67,7 +79,6 @@ if (isset($_POST['submit-student'])) {
     }
 }
 
-
 // Permet de mettre une note
 if (isset($_POST['note']) && isset($_POST['button-note'])) {
     $id = $_POST['eleve-id']; // Récupérer l'ID de l'élève depuis le formulaire
@@ -84,7 +95,6 @@ if (isset($_POST['note']) && isset($_POST['button-note'])) {
         die();
     }
 }
-
 
 // Permet de supprimer un élève de la base de données
 if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id'])) {
@@ -120,6 +130,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
 <div class="container">
     <section class="section">
         <h1 class="red">Voici la liste des élèves :</h1>
+        <form method="post">
+            <select name="classe-selectionnee">
+                <option value="">Sélectionnez une classe</option>
+                <?php foreach ($listeClasses as $classe) { ?>
+                    <option value="<?= $classe['classe'] ?>" <?php if ($classe['classe'] === $classeSelectionnee) echo 'selected'; ?>> <?= $classe['classe'] ?> </option>
+                <?php } ?>
+            </select>
+            <button type="submit" class="first-button" name="filtrer-par-classe">Filtrer par classe</button>
+        </form>
+
         <table>
             <thead>
             <tr>
@@ -131,6 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
                 <th>ID</th>
             </tr>
             </thead>
+
             <tbody>
             <?php foreach ($listeEleve as $eleve) { ?>
                 <tr>
@@ -168,8 +189,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
         <?php } else { ?>
             <p class="orange">Aucun élève choisi pour le moment.</p>
         <?php } ?>
-
-
 
         <form method="post">
             <button type="submit" class="first-button" name="select-student">Sélectionner un élève</button>
