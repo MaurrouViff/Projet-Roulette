@@ -11,15 +11,6 @@ body {
 
 }
 .section {
-    background: url("../assets/background/paysage-image.jpg") center center no-repeat;
-    min-height: 120vh;
-    padding-top: 126px;
-    align-items: center;
-    justify-content: center; /* Ajout de cette ligne pour centrer horizontalement le contenu */
-    padding-bottom: 90px;
-    background-size: cover;
-}
-.second-section {
     background: url("../assets/background/poutine-sur-ours.jpg") center center no-repeat;
     min-height: 120vh;
     padding-top: 126px;
@@ -28,6 +19,7 @@ body {
     padding-bottom: 90px;
     background-size: cover;
 }
+
 .container {
     flex-grow: 1;
 }
@@ -84,9 +76,22 @@ hr {
     color: orange;
 }
 .input-note {
-    color: red;
+    width: 10%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
 }
+
+/* Style lorsque l'input est en focus */
+.input-note:focus {
+    border-color: #007bff; /* Couleur de la bordure en cas de focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Ombre légère lorsqu'il est en focus */
+}
+
 .blue-btn {
+
     padding: 15px 40px;
     background: linear-gradient(135deg, #006466 24%, #186785 50%, #186785 79%, #316AA4 100%);
     color: #fff;
@@ -95,4 +100,7 @@ hr {
     opacity: 0.8;
     transition: all 0.3s ease 0s;
     text-decoration: none;
+}
+li {
+    list-style-type: none;
 }
