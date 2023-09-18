@@ -1,18 +1,24 @@
 <?php
-function connexionPDO() {
-    $login = "root";
-    $mdp = "root";
-    $bd = "roulette";
-    $server = "localhost";
-    $charset = "utf8mb4";
+class Database {
+    private PDO $conn;
 
-    try {
-        $conn = new PDO("mysql:host=$server;dbname=$bd;charset=$charset", $login, $mdp);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $conn;
-    } catch (PDOException $e) {
-        print "Erreur de connexion PDO : " . $e->getMessage();
-        die();
+    public function __construct() {
+        $login = "root";
+        $mdp = "root";
+        $bd = "roulette";
+        $server = "localhost";
+        $charset = "utf8mb4";
+
+        try {
+            $this->conn = new PDO("mysql:host=$server;dbname=$bd;charset=$charset", $login, $mdp);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Erreur de connexion PDO : " . $e->getMessage());
+        }
+    }
+
+    public function getConnection() {
+        return $this->conn;
     }
 }
-
+?>
