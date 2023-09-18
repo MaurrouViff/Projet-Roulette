@@ -32,6 +32,27 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+    public function getClasses() {
+        try {
+            $req = $this->conn->prepare("SELECT DISTINCT classe FROM eleve");
+            $req->execute();
+
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+    public function getEleveByClasse($classe) {
+        try {
+            $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe");
+            $req->bindParam(":classe", $classe, PDO::PARAM_STR);
+            $req->execute();
+
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die("Erreur : " . $e->getMessage());
+        }
+    }
 
 
     public function selectRandomEleve() {
