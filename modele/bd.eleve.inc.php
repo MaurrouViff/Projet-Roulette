@@ -46,5 +46,28 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+    public function setNoteById($id, $note) {
+        try {
+            $req = $this->conn->prepare("");
+            $req->bindParam(":note", $note, PDO::PARAM_INT);
+            $req->bindParam(":id", $id, PDO::PARAM_INT);
+            $req->execute();
+
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+    public function setPassageById($id) {
+        try {
+            $req = $this->conn->prepare("");
+            $req->bindParam(":id", $id, PDO::PARAM_INT);
+            $req->execute();
+
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
 }
 
