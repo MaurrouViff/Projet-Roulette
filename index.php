@@ -72,6 +72,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Classe</th>
+                <th>Note</th>
+                <th>Passage</th>
                 <th>ID</th>
             </tr>
             </thead>
@@ -81,6 +83,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
                     <td><?= htmlspecialchars($eleve["nomfamille"]) ?></td>
                     <td><?= htmlspecialchars($eleve["prenom"]) ?></td>
                     <td><?= htmlspecialchars($eleve["classe"]) ?></td>
+                    <td><?= htmlspecialchars($eleve["note"]) ?></td>
+                    <td><?= htmlspecialchars($eleve["passage"]) ?></td>
                     <td><?= $eleve["id"] ?></td>
                 </tr>
             <?php } ?>
@@ -89,7 +93,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
         <hr>
         <h3 class="red">Elève choisi : </h3>
         <?php if ($eleveChoisi) { ?>
-            <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"]) ?>, Prénom : <?= htmlspecialchars($eleveChoisi["prenom"]) ?>, Classe : <?= htmlspecialchars($eleveChoisi["classe"]) ?>, ID : <?= $eleveChoisi["id"] ?></p>
+            <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"]) ?>, Prénom : <?= htmlspecialchars($eleveChoisi["prenom"]) ?>, Classe : <?= htmlspecialchars($eleveChoisi["classe"]) ?>, ID : <?= $eleveChoisi["id"] ?>, Passage : <?= $eleveChoisi["passage"] ?>, Note : <?= $eleveChoisi["note"] ?></p>
+            <form method="POST">
+                <input class="input-note" name="set-note" placeholder="Mettez une note"><br>
+                <button type="submit" class="first-button" name="button-note">Confirmer la note</button>
+            </form>
+            <br />
             <a href="?action=supprimer&id=<?= $eleveChoisi["id"] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
         <?php } else { ?>
             <p class="orange">Aucun élève choisi pour le moment.</p>
