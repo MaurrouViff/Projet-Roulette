@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 
 $eleveDb = new EleveDatabase();
 
+
 // Récupérer la liste des classes depuis la base de données
 $listeClasses = $eleveDb->getClasses();
 
@@ -14,6 +15,14 @@ $listeEleve = [];
 
 
 // Vérifier si le formulaire de filtrage par classe a été soumis
+session_start();
+
+// Récupérer la classe sélectionnée précédemment (si elle existe)
+$classeSelectionnee = isset($_SESSION['classe-selectionnee']) ? $_SESSION['classe-selectionnee'] : "";
+
+// ...
+$eleve = $eleveDb->selectRandomEleveByClasse($classeSelectionnee);
+
 if (isset($_POST['filtrer-par-classe'])) {
     $classeSelectionnee = $_POST['classe-selectionnee'];
 
@@ -28,18 +37,24 @@ if (isset($_POST['filtrer-par-classe'])) {
     }
 }
 
+
+
 // ...
 
 
 // Affiche la moyenne de la classe
 $showMoyenne = $eleveDb->getMoyenneNote();
 
-// Permet de choisir un élève
-$eleveChoisi = null;
 
-if (isset($_POST['select-student'])) {
+// Permet de choisir un élève
+if (empty($classeSelectionnee)) {
+    // Si aucune classe n'a été sélectionnée, utilisez une valeur par défaut ou affichez un message d'erreur.
+    echo "Veuillez sélectionner une classe avant de choisir un élève.";
+} else {
     try {
-        $eleve = $eleveDb->selectRandomEleve();
+        // Utilisez la classe sélectionnée dans votre requête de sélection aléatoire.
+        $eleve = $eleveDb->selectRandomEleveByClasse($classeSelectionnee);
+
         if ($eleve) {
             $eleveChoisi = $eleve[0];
         }
@@ -49,6 +64,8 @@ if (isset($_POST['select-student'])) {
         die();
     }
 }
+
+
 // Permet de mettre le passage
 if (isset($_POST['passage']) && isset($_POST['button-passage'])) {
     $id = $_POST['eleve-id'];
@@ -138,11 +155,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
             <select name="classe-selectionnee">
                 <option value="">Sélectionnez une classe</option>
                 <?php foreach ($listeClasses as $classe) { ?>
-                    <option value="<?= htmlspecialchars($classe['classe']) ?>" <?php if ($classe['classe'] === htmlspecialchars($classeSelectionnee)) echo 'selected'; ?>> <?= $classe['classe'] ?> </option>
+                    <option value="<?= htmlspecialchars($classe['classe']) ?>" <?php if ($classe['classe'] === $classeSelectionnee) echo 'selected'; ?>> <?= $classe['classe'] ?> </option>
                 <?php } ?>
             </select>
-            <button type="submit" class="first-button" name="filtrer-par-classe">Filtrer par classe</button>
+
+            <button type="submit" class="first-button" name="filtrer-par-classe">Sélectionner un élève par classe</button>
         </form>
+        <input type="hidden" name="classe-selectionnee-hidden" value="<?= htmlspecialchars($classeSelectionnee) ?>">
+
 
         <table>
             <thead>
@@ -167,12 +187,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
                     <td><?= $eleve["id"] ?></td>
                 </tr>
             <?php } ?>
+
             </tbody>
         </table>
         <p class="red">Moyenne de la classe : </p>
         <p class="orange"><?php echo $showMoyenne; ?></p>
-        <hr>
-        <a class="blue-btn" href="parametre.php">Aller vers les paramètres</a>
+        <hr><br /><br />
+
         <h3 class="red">Elève choisi : </h3>
         <?php if ($eleveChoisi) { ?>
             <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"] ?? "") ?>,
@@ -183,26 +204,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
                 ID : <?= $eleveChoisi["id"] ?? "" ?></p>
             <form method="POST">
                 <input type="hidden" name="eleve-id" value="<?= $eleveChoisi["id"] ?? "" ?>">
-                <input type="text" class="input-note" name="note" placeholder="Mettez une note"><br>
-                <button type="submit" class="first-button" name="button-note">Confirmer la note</button><br>
-                <input type="text" class="input-note" name="passage" placeholder="Mettez en passé"><br>
+                <input type="text" class="input-note" name="note" placeholder="Mettre une note"><br><br>
+                <button type="submit" class="first-button" name="button-note">Confirmer la note</button><br><br>
+                <input type="text" class="input-note" name="passage" placeholder="Indiquer s'il est passé"><br><br>
+                <ul>
+                    <li class="red">Oui s'il est passé !</li>
+                    <li class="red">Non, s'il n'est pas passé mais est par défaut !</li>
+                </ul>
                 <button type="submit" class="first-button" name="button-passage">Confirmer le passage</button>
             </form>
 
             <br />
-            <a href="?action=supprimer&id=<?= $eleveChoisi["id"] ?? "" ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
+            <a href="?action=supprimer&id=<?= $eleveChoisi["id"] ?? "" ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a><br><br>
         <?php } else { ?>
             <p class="orange">Aucun élève choisi pour le moment.</p>
         <?php } ?>
 
-        <form method="post">
-            <button type="submit" class="first-button" name="select-student">Sélectionner un élève</button>
-        </form>
+
         <hr>
         <form method="post">
-            <input type="text" class="input-note" name="set-prenom" placeholder="Écrivez le prénom de votre élève"><br />
-            <input type="text" class="input-note" name="set-nom" placeholder="Écrivez le nom de votre élève"><br />
-            <input type="text" class="input-note" name="set-classe" placeholder="Écrivez le nom de votre classe"><br />
+            <input type="text" class="input-note" name="set-prenom" placeholder="Écrivez le prénom de votre élève" required><br /><br>
+            <input type="text" class="input-note" name="set-nom" placeholder="Écrivez le nom de votre élève" required><br /><br>
+            <input type="text" class="input-note" name="set-classe" placeholder="Écrivez le nom de votre classe" required><br /><br>
             <button type="submit" class="first-button" name="submit-student">Confirmer</button>
         </form>
     </section>
