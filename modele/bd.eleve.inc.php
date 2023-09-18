@@ -42,10 +42,11 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
-    public function getEleveByClasse($classe) {
+    public function getEleveByClasse($classe, $passage = 'non') {
         try {
-            $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe");
+            $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe AND passage = :passage");
             $req->bindParam(":classe", $classe, PDO::PARAM_STR);
+            $req->bindParam(":passage", $passage, PDO::PARAM_STR);
             $req->execute();
 
             return $req->fetchAll(PDO::FETCH_ASSOC);
@@ -53,6 +54,7 @@ class EleveDatabase {
             die("Erreur : " . $e->getMessage());
         }
     }
+
 
 
     public function selectRandomEleve() {
