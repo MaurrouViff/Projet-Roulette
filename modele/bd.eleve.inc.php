@@ -20,9 +20,23 @@ class EleveDatabase {
         }
     }
 
+    public function addEleve($prenom, $nom, $classe) {
+        try {
+            $req = $this->conn->prepare("INSERT INTO eleve (classe, nomfamille, prenom, note, passage) VALUES (:classe, :nom, :prenom, 0, 'non')");
+            $req->bindParam(":prenom", $prenom, PDO::PARAM_STR);
+            $req->bindParam(":nom", $nom, PDO::PARAM_STR);
+            $req->bindParam(":classe", $classe, PDO::PARAM_STR);
+            $req->execute();
+            return true;
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+
+
     public function selectRandomEleve() {
         try {
-            $req = $this->conn->prepare("SELECT * FROM eleve ORDER BY RAND() LIMIT 1;");
+            $req = $this->conn->prepare("SELECT * FROM eleve WHERE passage = 'non' ORDER BY RAND() LIMIT 1;");
             $req->execute();
 
             return $req->fetchAll(PDO::FETCH_ASSOC);
@@ -48,7 +62,7 @@ class EleveDatabase {
     }
     public function setNoteById($id, $note) {
         try {
-            $req = $this->conn->prepare("");
+            $req = $this->conn->prepare("UPDATE eleve SET note = :note WHERE id = :id");
             $req->bindParam(":note", $note, PDO::PARAM_INT);
             $req->bindParam(":id", $id, PDO::PARAM_INT);
             $req->execute();
@@ -58,9 +72,10 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
-    public function setPassageById($id) {
+    public function setPassageById($id, $passage) {
         try {
-            $req = $this->conn->prepare("");
+            $req = $this->conn->prepare("UPDATE eleve SET passage = :passage WHERE id = :id");
+            $req->bindParam(":passage", $passage, PDO::PARAM_STR);
             $req->bindParam(":id", $id, PDO::PARAM_INT);
             $req->execute();
 
@@ -69,5 +84,17 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+    public function getMoyenneNote() {
+        try {
+            $req = $this->conn->prepare("SELECT AVG(note) AS moyenne_notes FROM eleve");
+            $req->execute();
+
+            // Utilisez fetchColumn pour récupérer la moyenne sous forme de valeur unique
+            return $req->fetchColumn();
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+
 }
 

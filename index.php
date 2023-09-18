@@ -6,6 +6,9 @@ error_reporting(E_ALL);
 
 $eleveDb = new EleveDatabase();
 
+// Affiche la moyenne de la classe
+$showMoyenne = $eleveDb->getMoyenneNote();
+
 // Affiche la liste des élèves
 try {
     $listeEleve = $eleveDb->getEleve();
@@ -30,6 +33,58 @@ if (isset($_POST['select-student'])) {
         die();
     }
 }
+// Permet de mettre le passage
+if (isset($_POST['passage']) && isset($_POST['button-passage'])) {
+    $id = $_POST['eleve-id'];
+    $passage = $_POST['passage'];
+
+    try {
+        $eleve = $eleveDb->setPassageById($id, $passage);
+        if ($eleve) {
+            $eleveChoisi = $eleve[0];
+            header("Location: index.php");
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+// Permet de rentrer un élève dans une classe
+if (isset($_POST['submit-student'])) {
+    $prenom = $_POST['set-prenom'];
+    $nom = $_POST['set-nom'];
+    $classe = $_POST['set-classe'];
+
+    // Appelez la méthode addEleve pour ajouter l'élève
+    $result = $eleveDb->addEleve($prenom, $nom, $classe);
+
+    if ($result === true) {
+        // L'élève a été ajouté avec succès
+        header("Location: index.php");
+    } else {
+        // Une erreur s'est produite lors de l'ajout de l'élève, vous pouvez afficher un message d'erreur ici
+        echo "Erreur lors de l'ajout de l'élève : " . $result;
+    }
+}
+
+
+// Permet de mettre une note
+if (isset($_POST['note']) && isset($_POST['button-note'])) {
+    $id = $_POST['eleve-id']; // Récupérer l'ID de l'élève depuis le formulaire
+    $note = $_POST['note'];   // Récupérer la note depuis le formulaire
+
+    try {
+        $eleve = $eleveDb->setNoteById($id, $note);
+        if ($eleve) {
+            $eleveChoisi = $eleve[0];
+            header("Location : index.php");
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+
 
 // Permet de supprimer un élève de la base de données
 if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id'])) {
@@ -65,7 +120,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
 <div class="container">
     <section class="section">
         <h1 class="red">Voici la liste des élèves :</h1>
-
         <table>
             <thead>
             <tr>
@@ -80,34 +134,53 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
             <tbody>
             <?php foreach ($listeEleve as $eleve) { ?>
                 <tr>
-                    <td><?= htmlspecialchars($eleve["nomfamille"]) ?></td>
-                    <td><?= htmlspecialchars($eleve["prenom"]) ?></td>
-                    <td><?= htmlspecialchars($eleve["classe"]) ?></td>
-                    <td><?= htmlspecialchars($eleve["note"]) ?></td>
-                    <td><?= htmlspecialchars($eleve["passage"]) ?></td>
+                    <td><?= ($eleve["nomfamille"]) ?></td>
+                    <td><?= ($eleve["prenom"]) ?></td>
+                    <td><?= ($eleve["classe"]) ?></td>
+                    <td><?= ($eleve["note"]) ?></td>
+                    <td><?= ($eleve["passage"]) ?></td>
                     <td><?= $eleve["id"] ?></td>
                 </tr>
             <?php } ?>
             </tbody>
         </table>
+        <p class="red">Moyenne de la classe : </p>
+        <p class="orange"><?php echo $showMoyenne; ?></p>
         <hr>
         <h3 class="red">Elève choisi : </h3>
         <?php if ($eleveChoisi) { ?>
-            <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"]) ?>, Prénom : <?= htmlspecialchars($eleveChoisi["prenom"]) ?>, Classe : <?= htmlspecialchars($eleveChoisi["classe"]) ?>, ID : <?= $eleveChoisi["id"] ?>, Passage : <?= $eleveChoisi["passage"] ?>, Note : <?= $eleveChoisi["note"] ?></p>
+            <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"] ?? "") ?>,
+                Prénom : <?= htmlspecialchars($eleveChoisi["prenom"] ?? "") ?>,
+                Classe : <?= htmlspecialchars($eleveChoisi["classe"] ?? "") ?>,
+                Passage : <?= htmlspecialchars($eleveChoisi["passage"] ?? "") ?>,
+                Note : <?= $eleveChoisi["note"] ?? "" ?>,
+                ID : <?= $eleveChoisi["id"] ?? "" ?></p>
             <form method="POST">
-                <input class="input-note" name="set-note" placeholder="Mettez une note"><br>
-                <button type="submit" class="first-button" name="button-note">Confirmer la note</button>
+                <input type="hidden" name="eleve-id" value="<?= $eleveChoisi["id"] ?? "" ?>">
+                <input type="text" class="input-note" name="note" placeholder="Mettez une note"><br>
+                <button type="submit" class="first-button" name="button-note">Confirmer la note</button><br>
+                <input type="text" class="input-note" name="passage" placeholder="Mettez en passé"><br>
+                <button type="submit" class="first-button" name="button-passage">Confirmer le passage</button>
             </form>
+
             <br />
-            <a href="?action=supprimer&id=<?= $eleveChoisi["id"] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
+            <a href="?action=supprimer&id=<?= $eleveChoisi["id"] ?? "" ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
         <?php } else { ?>
             <p class="orange">Aucun élève choisi pour le moment.</p>
         <?php } ?>
+
+
 
         <form method="post">
             <button type="submit" class="first-button" name="select-student">Sélectionner un élève</button>
         </form>
         <hr>
+        <form method="post">
+            <input type="text" class="input-note" name="set-prenom" placeholder="Écrivez le prénom de votre élève"><br />
+            <input type="text" class="input-note" name="set-nom" placeholder="Écrivez le nom de votre élève"><br />
+            <input type="text" class="input-note" name="set-classe" placeholder="Écrivez le nom de votre classe"><br />
+            <button type="submit" class="first-button" name="submit-student">Confirmer</button>
+        </form>
     </section>
 </div>
 
