@@ -12,13 +12,13 @@ CREATE TABLE eleve (
 );
 
 INSERT INTO eleve (id, classe, nomfamille, prenom, note, passage) VALUES
-                             (1, 'SIO2', 'AUBRIET', 'Aurélien', 0, 'oui'),
-                             (2, 'SIO1', 'BARIAL', 'Benjamin', 0, 'oui'),
-                             (3, 'SIO1', 'GUILLAUME', 'Corentin', 0, 'oui'),
-                             (4, 'SIO2', 'BON', 'Jean', 0, 'oui'),
-                             (5, 'SIO2', 'NEYMAR', 'Jean', 0, 'oui'),
-                             (6, 'SIO2', 'DE LANGE', 'Aymeric', 0, 'oui'),
-                             (7, 'SIO2', 'Gadroy', 'Léo', 0, 'oui'),
+                             (1, 'SIO2', 'AUBRIET', 'Aurélien', 0, 'non'),
+                             (2, 'SIO1', 'BARIAL', 'Benjamin', 0, 'non'),
+                             (3, 'SIO1', 'GUILLAUME', 'Corentin', 0, 'non'),
+                             (4, 'SIO2', 'BON', 'Jean', 0, 'non'),
+                             (5, 'SIO2', 'NEYMAR', 'Jean', 0, 'non'),
+                             (6, 'SIO2', 'DE LANGE', 'Aymeric', 0, 'non'),
+                             (7, 'SIO2', 'Gadroy', 'Léo', 0, 'non'),
                              (8, 'SIO2', 'TURQUIER', 'Victor', 0, 'non'),
                              (9, 'SIO2', 'LHERME', 'Hugo', 0, 'non'),
                              (10, 'SIO2', 'CORDIER', 'Eugène', 0, 'non'),
