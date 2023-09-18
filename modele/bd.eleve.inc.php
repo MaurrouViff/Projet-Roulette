@@ -2,7 +2,7 @@
 include_once("bd.inc.php");
 
 class EleveDatabase {
-    private PDO $conn;
+    private $conn;
 
     public function __construct() {
         $db = new Database();

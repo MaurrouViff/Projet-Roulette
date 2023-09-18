@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private PDO $conn;
+    private $conn;
 
     public function __construct() {
         $login = "root";
