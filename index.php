@@ -12,13 +12,14 @@ $listeClasses = $eleveDb->getClasses();
 // Tableau qui contiendra les élèves à afficher
 $listeEleve = [];
 
+
 // Vérifier si le formulaire de filtrage par classe a été soumis
 if (isset($_POST['filtrer-par-classe'])) {
     $classeSelectionnee = $_POST['classe-selectionnee'];
 
     if (!empty($classeSelectionnee)) {
         try {
-            $listeEleve = $eleveDb->getEleveByClasse($classeSelectionnee);
+            $listeEleve = $eleveDb->getEleveByClasse($classeSelectionnee, 'non'); // Ajoutez 'non' pour le passage
         } catch (PDOException $e) {
             // Gestion de l'erreur de base de données
             echo "Erreur de base de données : " . $e->getMessage();
@@ -26,6 +27,9 @@ if (isset($_POST['filtrer-par-classe'])) {
         }
     }
 }
+
+// ...
+
 
 // Affiche la moyenne de la classe
 $showMoyenne = $eleveDb->getMoyenneNote();
@@ -134,7 +138,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
             <select name="classe-selectionnee">
                 <option value="">Sélectionnez une classe</option>
                 <?php foreach ($listeClasses as $classe) { ?>
-                    <option value="<?= $classe['classe'] ?>" <?php if ($classe['classe'] === $classeSelectionnee) echo 'selected'; ?>> <?= $classe['classe'] ?> </option>
+                    <option value="<?= htmlspecialchars($classe['classe']) ?>" <?php if ($classe['classe'] === htmlspecialchars($classeSelectionnee)) echo 'selected'; ?>> <?= $classe['classe'] ?> </option>
                 <?php } ?>
             </select>
             <button type="submit" class="first-button" name="filtrer-par-classe">Filtrer par classe</button>
@@ -168,6 +172,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
         <p class="red">Moyenne de la classe : </p>
         <p class="orange"><?php echo $showMoyenne; ?></p>
         <hr>
+        <a class="blue-btn" href="parametre.php">Aller vers les paramètres</a>
         <h3 class="red">Elève choisi : </h3>
         <?php if ($eleveChoisi) { ?>
             <p class="orange">Nom : <?= htmlspecialchars($eleveChoisi["nomfamille"] ?? "") ?>,
