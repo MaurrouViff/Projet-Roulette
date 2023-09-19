@@ -32,6 +32,7 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+
     public function getClasses() {
         try {
             $req = $this->conn->prepare("SELECT DISTINCT classe FROM eleve");
@@ -42,6 +43,7 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+
     public function getEleveByClasse($classe, $passage = 'non') {
         try {
             $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe AND passage = :passage");
@@ -54,6 +56,7 @@ class EleveDatabase {
             die("Erreur : " . $e->getMessage());
         }
     }
+
     public function selectRandomEleveByClasse($classe) {
         try {
             $req = $this->conn->prepare("SELECT * FROM eleve WHERE classe = :classe AND passage = 'non' ORDER BY RAND() LIMIT 1");
@@ -105,6 +108,7 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+
     public function setNoteById($id, $note) {
         try {
             $req = $this->conn->prepare("UPDATE eleve SET note = :note WHERE id = :id");
@@ -117,6 +121,7 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+
     public function setPassageById($id, $passage) {
         try {
             $req = $this->conn->prepare("UPDATE eleve SET passage = :passage WHERE id = :id");
@@ -129,6 +134,7 @@ class EleveDatabase {
             return "Erreur PDO : " . $e->getMessage();
         }
     }
+
     public function getMoyenneNote() {
         try {
             $req = $this->conn->prepare("SELECT AVG(note) AS moyenne_notes FROM eleve");
@@ -141,5 +147,39 @@ class EleveDatabase {
         }
     }
 
+    public function removeValue() {
+        try {
+            $req = $this->conn->prepare("DELETE FROM eleve;");
+            $req->execute();
+
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+
+    public function addValue() {
+        try {
+            $req = $this->conn->prepare("INSERT INTO eleve (id, classe, nomfamille, prenom, note, passage) VALUES
+                                                (1, 'SIO2', 'AUBRIET', 'Aurélien', 0, 'non'),
+                                                (2, 'SIO1', 'BARIAL', 'Benjamin', 0, 'non'),
+                                                 (3, 'SIO1', 'GUILLAUME', 'Corentin', 0, 'non'),
+                                                 (4, 'SIO2', 'BON', 'Jean', 0, 'non'),
+                                                 (5, 'SIO2', 'NEYMAR', 'Jean', 0, 'non'),
+                                                 (6, 'SIO2', 'DE LANGE', 'Aymeric', 0, 'non'),
+                                                 (7, 'SIO2', 'Gadroy', 'Léo', 0, 'non'),
+                                                 (8, 'SIO2', 'TURQUIER', 'Victor', 0, 'non'),
+                                                 (9, 'SIO2', 'LHERME', 'Hugo', 0, 'non'),
+                                                 (10, 'SIO2', 'CORDIER', 'Eugène', 0, 'non'),
+                                                 (11, 'SIO2', 'NOËL', 'Père', 0, 'non'),
+                                                 (12, 'SIO3', 'MORTEL', 'Lee', 0, 'non'),
+                                                 (13, 'SIO3', 'LAMOUREUX', 'Antonin', 0, 'non')
+
+");
+            $req->execute();
+            return True;
+        } catch (PDOException $e) {
+            return "Erreur PDO : " .$e->getMessage();
+        }
+    }
 }
 
