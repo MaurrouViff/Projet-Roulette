@@ -127,6 +127,32 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
         echo "Élève introuvable dans la base de données.";
     }
 }
+
+// Permet de reset les valeurs dans la table
+if (isset($_POST['delete-value'])) {
+    try {
+        $deleteValue = $eleveDb->removeValue();
+        if ($deleteValue) {
+            header('Location: index.php');
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+
+// Permet d'ajouter les valeurs à la base de données
+if (isset($_POST['add-value'])) {
+    try {
+        $addValue = $eleveDb->addValue();
+        if ($addValue) {
+            header('Location: index.php');
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
 ?>
 
 <!doctype html>
@@ -141,7 +167,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
     <link rel="icon" href="assets/icon/roulette-svg.png"/>
 </head>
 <body>
-
 <div class="container">
     <section class="section">
         <h1 class="red">Voici la liste des élèves :</h1>
@@ -222,6 +247,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
             <input type="text" class="input-note" name="set-classe" placeholder="Écrivez le nom de votre classe" required><br /><br>
             <button type="submit" class="first-button" name="submit-student">Confirmer</button>
         </form>
+        <hr><br>
+        <h3 class="red">Réinitialiser la roulette</h3>
+        <button type="submit" class="first-button" name="delete-value">Supprimer les classes & élèves</button><br><br>
+        <button type="submit" class="first-button" name="add-value">Ajouter les valeurs</button>
     </section>
 </div>
 
