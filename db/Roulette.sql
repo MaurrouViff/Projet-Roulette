@@ -22,5 +22,7 @@ INSERT INTO eleve (id, classe, nomfamille, prenom, note, passage) VALUES
                              (8, 'SIO2', 'TURQUIER', 'Victor', 0, 'non'),
                              (9, 'SIO2', 'LHERME', 'Hugo', 0, 'non'),
                              (10, 'SIO2', 'CORDIER', 'Eugène', 0, 'non'),
-                             (11, 'SIO2', 'NOËL', 'Père', 0, 'non')
+                             (11, 'SIO2', 'NOËL', 'Père', 0, 'non'),
+                             (12, 'SIO3', 'MORTEL', 'Lee', 0, 'non'),
+                             (13, 'SIO3', 'LAMOUREUX', 'Antonin', 0, 'non')
 
