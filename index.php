@@ -249,8 +249,12 @@ if (isset($_POST['add-value'])) {
         </form>
         <hr><br>
         <h3 class="red">Réinitialiser la roulette</h3>
+        <form method="POST">
         <button type="submit" class="first-button" name="delete-value">Supprimer les classes & élèves</button><br><br>
+        </form>
+        <form method="POST">
         <button type="submit" class="first-button" name="add-value">Ajouter les valeurs</button>
+        </form>
     </section>
 </div>
 
