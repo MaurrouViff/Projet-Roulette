@@ -3,9 +3,9 @@ class Database {
     private $conn;
 
     public function __construct() {
-        $login = "root";
-        $mdp = "root";
-        $bd = "roulette";
+        $login = "aurelien";
+        $mdp = "pierre0800";
+        $bd = "Roulette";
         $server = "localhost";
         $charset = "utf8mb4";
 
