@@ -57,11 +57,11 @@
 
         <h3 class="red">Elève choisi :</h3>
         <?php if ($eleveChoisi) { ?>
-            <p>Nom : <?php echo htmlspecialchars($eleveChoisi["nomfamille"]); ?></p>
-            <p>Prénom : <?php echo htmlspecialchars($eleveChoisi["prenom"]); ?></p>
-            <p>Classe : <?php echo htmlspecialchars($eleveChoisi["classe"]); ?></p>
-            <p>Note : <?php echo htmlspecialchars($eleveChoisi["note"]); ?></p>
-            <p>Passage : <?php echo htmlspecialchars($eleveChoisi["passage"]); ?></p>
+            <p style="color: red">Nom : <?php echo htmlspecialchars($eleveChoisi["nomfamille"]); ?></p>
+            <p style="color: red">Prénom : <?php echo htmlspecialchars($eleveChoisi["prenom"]); ?></p>
+            <p style="color: red">Classe : <?php echo htmlspecialchars($eleveChoisi["classe"]); ?></p>
+            <p style="color: red">Note : <?php echo htmlspecialchars($eleveChoisi["note"]); ?></p>
+            <p style="color: red">Passage : <?php echo htmlspecialchars($eleveChoisi["passage"]); ?></p>
             <form method="POST">
 
                 <input type="text" class="input-note" name="note" placeholder="Mettre une note"><br><br>
