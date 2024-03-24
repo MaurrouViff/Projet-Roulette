@@ -1,3 +1,5 @@
+<?php error_reporting(0);
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -62,8 +64,10 @@
             <p style="color: red">Classe : <?php echo htmlspecialchars($eleveChoisi["classe"]); ?></p>
             <p style="color: red">Note : <?php echo htmlspecialchars($eleveChoisi["note"]); ?></p>
             <p style="color: red">Passage : <?php echo htmlspecialchars($eleveChoisi["passage"]); ?></p>
-            <form method="POST">
 
+
+            <form method="POST">
+                <input type="hidden" name="eleve-id" value="<?php echo $eleveChoisi['id']; ?>">
                 <input type="text" class="input-note" name="note" placeholder="Mettre une note"><br><br>
                 <button type="submit" class="first-button" name="button-note">Confirmer la note</button><br><br>
                 <input type="text" class="input-note" name="passage" placeholder="Indiquer s'il est passé"><br><br>
@@ -73,6 +77,7 @@
                 </ul>
                 <button type="submit" class="first-button" name="button-passage">Confirmer le passage</button>
             </form>
+
 
             <br />
             <a href="?action=supprimer&id=" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a><br><br>
