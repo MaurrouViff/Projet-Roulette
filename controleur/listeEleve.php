@@ -183,7 +183,6 @@ if (isset($_POST['add-value'])) {
     }
 }
 
-
 // appel du script de vue qui permet de gerer l'affichage des donnees
 $titre = "Projet Roulette";
 include "$racine/vue/vueListeEleve.php";
