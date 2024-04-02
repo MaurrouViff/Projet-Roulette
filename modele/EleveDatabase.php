@@ -184,6 +184,19 @@ SET note = 0;
         }
     }
 
+    public function showStudentPassed() {
+        try {
+            $cnx = $this->getConnection();
+            $req = $cnx->prepare("SELECT *
+                                  FROM eleve
+                                  WHERE passage = 'oui';");
+            $req->execute();
+            return True;
+        } catch (PDOException $e) {
+            return "Erreur PDO !:" . $e->getMessage();
+        }
+    }
+
     public function addValue() {
         try {
             $cnx = $this->getConnection();

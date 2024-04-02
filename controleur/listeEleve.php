@@ -98,6 +98,10 @@ if (isset($_POST['submit-student'])) {
         echo "Erreur lors de l'ajout de l'élève : " . $result;
     }
 }
+// Récupérer les élèves qui sont déjà passés
+$elevesPasses = $eleveDb->showStudentPassed();
+
+// Transférer les élèves passés à la vue
 
 // Permet de mettre une note
 if (isset($_POST['note']) && isset($_POST['button-note'])) {

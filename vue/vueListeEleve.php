@@ -52,6 +52,8 @@
             <?php } ?>
             </tbody>
         </table>
+
+
         <hr><br /><br />
 
         <h3 class="red">Elève choisi :</h3>
@@ -104,6 +106,8 @@
             <button type="submit" class="first-button" name="reset-note">Reset les notes</button>
         </form>
     </section>
+
+
 </div>
 
 <footer>
