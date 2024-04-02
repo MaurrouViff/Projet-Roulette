@@ -146,6 +146,30 @@ if (isset($_POST['delete-value'])) {
     }
 }
 
+if (isset($_POST['reset-passage'])) {
+    try {
+        $resetPassage = $eleveDb->resetPassage();
+        if ($resetPassage) {
+            header('Location: index.php');
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+
+if (isset($_POST['reset-note'])) {
+    try {
+        $resetNote = $eleveDb->resetNote();
+        if ($resetNote) {
+            header('Location: index.php');
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+
 // Permet d'ajouter les valeurs à la base de données
 if (isset($_POST['add-value'])) {
     try {

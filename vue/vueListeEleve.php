@@ -52,9 +52,6 @@
             <?php } ?>
             </tbody>
         </table>
-
-        <p class="red">Moyenne de la classe :</p>
-        <p class="orange"><?php echo $showMoyenne; ?></p>
         <hr><br /><br />
 
         <h3 class="red">Elève choisi :</h3>
@@ -98,7 +95,13 @@
             <button type="submit" class="first-button" name="delete-value">Supprimer les classes & élèves</button><br><br>
         </form>
         <form method="POST">
-            <button type="submit" class="first-button" name="add-value">Ajouter les valeurs</button>
+            <button type="submit" class="first-button" name="add-value">Ajouter les valeurs</button><br><br>
+        </form>
+        <form method="post">
+            <button type="submit" class="first-button" name="reset-passage">Reset les passages</button><br><br>
+        </form>
+        <form method="post">
+            <button type="submit" class="first-button" name="reset-note">Reset les notes</button>
         </form>
     </section>
 </div>

@@ -154,9 +154,33 @@ class EleveDatabase extends Database {
             $cnx = $this->getConnection();
             $req = $cnx->prepare("DELETE FROM eleve;");
             $req->execute();
-
+            return True;
         } catch (PDOException $e) {
             return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+
+    public function resetPassage() {
+        try {
+            $cnx = $this->getConnection();
+            $req = $cnx->prepare("UPDATE eleve SET passage = 'non';");
+            $req->execute();
+            return True;
+        } catch (PDOException $e) {
+            return "Erreur PDO !:" . $e->getMessage();
+        }
+    }
+
+    public function resetNote() {
+        try {
+            $cnx = $this->getConnection();
+            $req = $cnx->prepare("UPDATE eleve
+SET note = 0;
+");
+            $req->execute();
+            return True;
+        } catch (PDOException $e) {
+            return "Erreur PDO !:" . $e->getMessage();
         }
     }
 
