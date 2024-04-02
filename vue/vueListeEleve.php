@@ -1,5 +1,4 @@
-<?php error_reporting(0);
-?>
+<?php error_reporting(0); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -38,7 +37,6 @@
                 <th>ID</th>
             </tr>
             </thead>
-
             <tbody>
             <?php foreach ($listeEleve as $eleve) { ?>
                 <tr>
@@ -53,6 +51,17 @@
             </tbody>
         </table>
 
+        <?php if ($elevesPasses): ?>
+            <h2 class="red">Élèves déjà passés :</h2>
+            <p>
+                <?php foreach ($elevesPasses as $eleve) : ?>
+                    <span style="color: red; font-size: 24px">
+        <?php echo htmlspecialchars($eleve["nomfamille"] . " " . $eleve["prenom"]) . ", " . $eleve["note"]. ", " . $eleve["passage"]; ?>
+    </span><br>
+                <?php endforeach; ?>
+
+            </p>
+        <?php endif; ?>
 
         <hr><br /><br />
 

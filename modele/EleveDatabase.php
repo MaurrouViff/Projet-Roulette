@@ -187,15 +187,14 @@ SET note = 0;
     public function showStudentPassed() {
         try {
             $cnx = $this->getConnection();
-            $req = $cnx->prepare("SELECT *
-                                  FROM eleve
-                                  WHERE passage = 'oui';");
+            $req = $cnx->prepare("SELECT * FROM eleve WHERE passage = 'oui'");
             $req->execute();
-            return True;
+            return $req->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            return "Erreur PDO !:" . $e->getMessage();
+            return "Erreur PDO !: " . $e->getMessage();
         }
     }
+
 
     public function addValue() {
         try {

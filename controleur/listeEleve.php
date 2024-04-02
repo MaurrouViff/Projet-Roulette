@@ -99,7 +99,9 @@ if (isset($_POST['submit-student'])) {
     }
 }
 // Récupérer les élèves qui sont déjà passés
+// Appel de la fonction pour récupérer les élèves déjà passés
 $elevesPasses = $eleveDb->showStudentPassed();
+
 
 // Transférer les élèves passés à la vue
 
