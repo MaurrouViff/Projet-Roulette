@@ -35,6 +35,7 @@
                 <th>Note</th>
                 <th>Passage</th>
                 <th>ID</th>
+                <th>Temps</th>
             </tr>
             </thead>
             <tbody>
@@ -46,6 +47,7 @@
                     <td><?php echo htmlspecialchars($eleve["note"]); ?></td>
                     <td><?php echo htmlspecialchars($eleve["passage"]); ?></td>
                     <td><?php echo $eleve["id"]; ?></td>
+                    <td><?php echo htmlspecialchars($eleve["temps"]); ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -72,6 +74,7 @@
             <p style="color: red">Classe : <?php echo htmlspecialchars($eleveChoisi["classe"]); ?></p>
             <p style="color: red">Note : <?php echo htmlspecialchars($eleveChoisi["note"]); ?></p>
             <p style="color: red">Passage : <?php echo htmlspecialchars($eleveChoisi["passage"]); ?></p>
+            <p style="color: red;">Temps : <?php echo htmlspecialchars(($eleveChoisi["temps"])); ?></p>
 
 
             <form method="POST">
@@ -83,7 +86,9 @@
                     <li class="red">Oui s'il est passé !</li>
                     <li class="red">Non, s'il n'est pas passé mais est par défaut !</li>
                 </ul>
-                <button type="submit" class="first-button" name="button-passage">Confirmer le passage</button>
+                <button type="submit" class="first-button" name="button-temps">Confirmer le temps</button><br>
+                <input type="text" name="temps" class="input-note" placeholder="Le temps de l'élève">
+
             </form>
 
 
@@ -114,13 +119,61 @@
         <form method="post">
             <button type="submit" class="first-button" name="reset-note">Reset les notes</button>
         </form>
+        <h1>Chronomètre</h1>
+        <div id="chronometre">00:00</div>
+        <button onclick="startChrono()">Démarrer</button>
+        <button onclick="pauseChrono()">Pause</button>
+        <button onclick="resetChrono()">Réinitialiser</button>
     </section>
-
-
 </div>
 
 <footer>
     <h4 class="red">Fait avec amour par Aurélien <3</h4>
 </footer>
 </body>
+<script>
+    let timer;
+    let secondes = 0;
+    let minutes = 0;
+    let isRunning = false;
+
+    function startChrono() {
+        if (!isRunning) {
+            isRunning = true;
+            timer = setInterval(incrementTime, 1000);
+        }
+    }
+
+    function pauseChrono() {
+        clearInterval(timer);
+        isRunning = false;
+    }
+
+    function resetChrono() {
+        clearInterval(timer);
+        isRunning = false;
+        secondes = 0;
+        minutes = 0;
+        updateDisplay();
+    }
+
+    function incrementTime() {
+        secondes++;
+        if (secondes === 60) {
+            secondes = 0;
+            minutes++;
+        }
+        if (minutes === 10) {
+            clearInterval(timer);
+            isRunning = false;
+        }
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        const formattedSeconds = secondes < 10 ? '0' + secondes : secondes;
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        document.getElementById('chronometre').innerText = formattedMinutes + ':' + formattedSeconds;
+    }
+</script>
 </html>

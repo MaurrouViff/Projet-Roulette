@@ -29,7 +29,7 @@ class EleveDatabase extends Database {
     public function addEleve($prenom, $nom, $classe) {
         try {
             $cnx = $this->getConnection();
-            $req = $cnx->prepare("INSERT INTO eleve (classe, nomfamille, prenom, note, passage) VALUES (:classe, :nom, :prenom, 0, 'non')");
+            $req = $cnx->prepare("INSERT INTO eleve (classe, nomfamille, prenom, note, passage) VALUES (:classe, :nom, :prenom, 0, 'non', '0s');");
             $req->bindParam(":prenom", $prenom, PDO::PARAM_STR);
             $req->bindParam(":nom", $nom, PDO::PARAM_STR);
             $req->bindParam(":classe", $classe, PDO::PARAM_STR);
@@ -128,6 +128,20 @@ class EleveDatabase extends Database {
             $cnx = $this->getConnection();
             $req = $cnx->prepare("UPDATE eleve SET passage = :passage WHERE id = :id");
             $req->bindParam(":passage", $passage, PDO::PARAM_STR);
+            $req->bindParam(":id", $id, PDO::PARAM_INT);
+            $req->execute();
+
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return "Erreur PDO : " . $e->getMessage();
+        }
+    }
+
+    public function setTempsById($id, $temps) {
+        try {
+            $cnx = $this->getConnection();
+            $req = $cnx->prepare("UPDATE eleve SET temps = :temps WHERE id = :id");
+            $req->bindParam(":temps", $temps, PDO::PARAM_STR);
             $req->bindParam(":id", $id, PDO::PARAM_INT);
             $req->execute();
 

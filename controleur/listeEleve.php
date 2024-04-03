@@ -81,6 +81,24 @@ if (isset($_POST['passage']) && isset($_POST['button-passage'])) {
         die();
     }
 }
+
+// Permet de mettre le temps de l'élève
+if (isset($_POST['temps']) && isset($_POST['button-temps'])) {
+    $id = $_POST['eleve-id'];
+    $temps = $_POST['temps'];
+
+    try {
+        $eleve = $eleveDb->setTempsById($id, $temps);
+        if ($eleve) {
+            $eleveChoisi = $eleve[0];
+            header("Location: index.php");
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de base de données : " . $e->getMessage();
+        die();
+    }
+}
+
 // Permet de rentrer un élève dans une classe
 if (isset($_POST['submit-student'])) {
     $prenom = $_POST['set-prenom'];
