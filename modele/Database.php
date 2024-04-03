@@ -1,8 +1,8 @@
 <?php
 
 class Database {
-    private $login = "aurelien";
-    private $mdp = "pierre0800";
+    private $login = "root";
+    private $mdp = "root";
     private $bd = "Roulette";
     private $serveur = "localhost";
     private $charset = "UTF8mb4";
